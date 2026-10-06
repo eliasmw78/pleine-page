@@ -1,0 +1,969 @@
+.panier-container {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* État panier vide */
+.panier-vide-card {
+  text-align: center;
+  background: #ffffff;
+  padding: 60px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 40px auto;
+  border: 1px dashed #cbd5e1;
+}
+
+.panier-vide-icone {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+}
+
+.panier-vide-card h2 {
+  color: #1b232d;
+  margin-bottom: 8px;
+}
+
+.panier-vide-card p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.btn-retour-catalogue {
+  display: inline-block;
+  background: #0b63a6;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.btn-retour-catalogue:hover {
+  background: #0d79cc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 99, 166, 0.3);
+}
+
+/* En-tête */
+.panier-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panier-top-bar h1 {
+  margin: 0;
+  color: #1b232d;
+  font-size: 1.9rem;
+}
+
+.panier-subtitle {
+  margin: 4px 0 0 0;
+  color: #64748b;
+}
+
+.panier-actions-rapides {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toggle-vues {
+  display: flex;
+  background: #e2e8f0;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.btn-toggle {
+  background: transparent;
+  border: none;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle.actif {
+  background: #ffffff;
+  color: #0b63a6;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.btn-vider {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #cbd5e1;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-vider:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+/* Jauge de livraison */
+.banniere-livraison {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+}
+
+.texte-livraison {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #166534;
+  margin-bottom: 8px;
+}
+
+.texte-livraison.offert {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.jauge-fond {
+  height: 7px;
+  background: #dcfce7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.jauge-progression {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  transition: width 0.4s ease;
+  border-radius: 4px;
+}
+
+/* Grille principale */
+.panier-grille {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .panier-grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Articles */
+.articles-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.article-carte {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-carte:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.article-couv {
+  width: 48px;
+  height: 68px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-family: Georgia, serif;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.couv-lettre {
+  font-size: 1.4rem;
+}
+
+.article-details {
+  flex: 1;
+}
+
+.article-titre {
+  text-decoration: none;
+  font-weight: 700;
+  color: #1b232d;
+  font-size: 1.05rem;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+.article-titre:hover {
+  color: #0b63a6;
+}
+
+.article-auteur {
+  margin: 3px 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.article-genre {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.article-prix-unitaire {
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.article-quantite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.selecteur-qte {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.btn-qte {
+  background: transparent;
+  border: none;
+  padding: 4px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #334155;
+  transition: background 0.2s ease;
+}
+
+.btn-qte:hover {
+  background: #e2e8f0;
+}
+
+.valeur-qte {
+  padding: 0 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.btn-supprimer {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-supprimer:hover {
+  color: #ef4444;
+}
+
+.article-total-ligne {
+  font-weight: 700;
+  color: #b8541f;
+  font-size: 1.15rem;
+  min-width: 80px;
+  text-align: right;
+}
+
+.navigation-panier-bas {
+  margin-top: 18px;
+}
+
+.lien-continuer {
+  color: #0b63a6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.lien-continuer:hover {
+  text-decoration: underline;
+}
+
+/* Colonne droite */
+.colonne-droite {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.recapitulatif-carte {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.recapitulatif-carte h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+  color: #1b232d;
+}
+
+.ligne-recap {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.ligne-remise {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.texte-gratuit {
+  color: #16a34a;
+}
+
+.code-promo-zone {
+  margin: 16px 0;
+  padding: 12px 0;
+  border-top: 1px dashed #e2e8f0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.form-code {
+  display: flex;
+  gap: 8px;
+}
+
+.form-code input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.btn-appliquer-code {
+  background: #1b232d;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-appliquer-code:hover {
+  background: #0b63a6;
+}
+
+.indices-promo {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.indices-promo code {
+  background: #f1f5f9;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #0b63a6;
+}
+
+.code-applique-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #dcfce7;
+  color: #166534;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.btn-retirer-code {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #166534;
+  font-weight: bold;
+}
+
+.separateur-recap {
+  height: 1px;
+  background: #cbd5e1;
+  margin: 14px 0;
+}
+
+.ligne-total-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1b232d;
+  margin-bottom: 18px;
+}
+
+.prix-final {
+  color: #b8541f;
+  font-size: 1.6rem;
+}
+
+.btn-commander {
+  width: 100%;
+  background: #0b63a6;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(11, 99, 166, 0.3);
+}
+
+.btn-commander:hover {
+  background: #0d79cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(11, 99, 166, 0.4);
+}
+
+.garanties-livraison {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: #64748b;
+  text-align: center;
+}
+
+/* ========================================================
+   LA FONCTIONNALITÉ SPECTACULAIRE : PILE À LIRE 3D
+   ======================================================== */
+.carte-pile-3d {
+  background: linear-gradient(145deg, #1e2631, #151c24);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-insolite {
+  display: inline-block;
+  background: rgba(255, 215, 0, 0.15);
+  color: #f7d070;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(247, 208, 112, 0.3);
+  margin-bottom: 6px;
+}
+
+.carte-pile-3d h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f8fafc;
+}
+
+.pile-desc {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 4px 0 18px 0;
+}
+
+/* La scène 3D */
+.scene-pile-3d {
+  position: relative;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  perspective: 900px;
+  padding: 10px 0 20px 0;
+}
+
+.socle-bois {
+  width: 90%;
+  height: 14px;
+  background: linear-gradient(90deg, #4a2810, #73401b, #4a2810);
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 6px;
+}
+
+.livres-empiles {
+  display: flex;
+  flex-direction: column-reverse; /* Le premier livre est en bas de la pile */
+  width: 86%;
+  margin-bottom: 12px;
+  position: relative;
+  transform: rotateX(8deg) rotateY(-4deg);
+}
+
+/* Chaque livre physique dans la pile */
+.livre-3d-tranche {
+  height: var(--hauteur-dos, 28px);
+  background: var(--couleur-dos, #8a4a24);
+  border-radius: 4px 6px 6px 4px;
+  margin-bottom: -2px; /* Légère superposition de reliure */
+  position: relative;
+  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.25), inset 0 -2px 3px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  border-left: 5px solid rgba(255, 255, 255, 0.15); /* Relief mors de reliure */
+}
+
+.livre-3d-tranche:hover {
+  transform: translateX(25px) scale(1.02);
+  box-shadow: -6px 6px 14px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  z-index: 100 !important;
+}
+
+.tranche-relief {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  gap: 8px;
+  font-family: Georgia, serif;
+}
+
+.tranche-titre {
+  color: #fffaea;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.3px;
+}
+
+.tranche-auteur {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.72rem;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.dorure-deco {
+  color: #ffd700;
+  font-size: 0.7rem;
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+}
+
+/* Grille de métriques poétiques */
+.stats-litteraires-grille {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 14px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 6px;
+  border-radius: 6px;
+}
+
+.stat-icone {
+  font-size: 1.2rem;
+}
+
+.stat-texte {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-valeur {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #f7d070;
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  line-height: 1.1;
+}
+
+/* ========================================================
+   VUE TICKET VINTAGE & MACHINE À ÉCRIRE
+   ======================================================== */
+.vue-ticket-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.ticket-caisse {
+  width: 100%;
+  max-width: 440px;
+  background: #fdfbf7;
+  color: #1e1e1e;
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+  position: relative;
+}
+
+/* Dentelures haut et bas façon ticket de caisse arraché */
+.ticket-dentelle-haut {
+  height: 10px;
+  background: radial-gradient(circle, transparent, transparent 50%, #fdfbf7 50%, #fdfbf7 100%);
+  background-size: 16px 20px;
+}
+
+.ticket-dentelle-bas {
+  height: 10px;
+  background: radial-gradient(circle, #fdfbf7, #fdfbf7 50%, transparent 50%, transparent 100%);
+  background-size: 16px 20px;
+}
+
+.ticket-corps {
+  padding: 24px 28px;
+}
+
+.ticket-entete {
+  text-align: center;
+}
+
+.ticket-entete h2 {
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin: 0 0 6px 0;
+}
+
+.ticket-entete p {
+  margin: 2px 0;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.ticket-date-ligne {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-top: 8px;
+}
+
+.ticket-separateur-pointille {
+  border-top: 1px dashed #777;
+  margin: 12px 0;
+}
+
+.ticket-separateur-double {
+  border-top: 2px double #111;
+  margin: 10px 0;
+}
+
+.ticket-ligne-titres {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.ticket-item-nom {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+}
+
+.ticket-item-sub {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.ticket-item-prix {
+  font-weight: bold;
+}
+
+.ticket-ligne {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.ticket-ligne.remise {
+  color: #15803d;
+}
+
+.ticket-total-fort {
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.ticket-citation {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 10px 0;
+}
+
+.ticket-citation:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.texte-citation {
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0 0 4px 0;
+}
+
+.auteur-citation {
+  font-size: 0.75rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.astuce-clic {
+  display: block;
+  font-size: 0.65rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+.ticket-code-barres {
+  text-align: center;
+  margin: 16px 0 10px 0;
+}
+
+.ticket-code-barres .barres {
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  font-family: monospace;
+}
+
+.ticket-code-barres .code-num {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+}
+
+.ticket-merci {
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+.btn-imprimer {
+  background: #1b232d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-imprimer:hover {
+  background: #0b63a6;
+  transform: translateY(-2px);
+}
+
+/* ========================================================
+   MODAL DE COMMANDE VALIDÉE & CONFETTIS
+   ======================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+  padding: 16px;
+}
+
+.modal-colis {
+  background: #ffffff;
+  max-width: 440px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.confettis-effet {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.confetti {
+  animation: tomber 2s infinite ease-in-out;
+  font-size: 1.4rem;
+}
+
+.colis-carton {
+  width: 90px;
+  height: 80px;
+  background: #b5835a;
+  margin: 10px auto 16px auto;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.colis-ruban {
+  position: absolute;
+  width: 18px;
+  height: 100%;
+  background: #873600;
+}
+
+.colis-tampon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: 1px solid #78281f;
+  color: #78281f;
+  font-size: 0.55rem;
+  font-weight: bold;
+  padding: 2px 4px;
+  transform: rotate(12deg);
+  border-radius: 2px;
+}
+
+.colis-icone {
+  font-size: 2.2rem;
+  z-index: 2;
+}
+
+.modal-colis h2 {
+  color: #1b232d;
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+}
+
+.modal-texte {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.modal-recap {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #334155;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-fermer-modal {
+  background: #0b63a6;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-fermer-modal:hover {
+  background: #0d79cc;
+  transform: translateY(-2px);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes tomber {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(40px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

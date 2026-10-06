@@ -1,0 +1,369 @@
+<div class="panier-container">
+  @if (panierService.totalArticles() === 0) {
+    <!-- État Panier Vide -->
+    <div class="panier-vide-card">
+      <div class="panier-vide-icone">📚</div>
+      <h2>Votre panier littéraire est vide</h2>
+      <p>Votre table de chevet attend impatiemment de nouvelles histoires à dévorer.</p>
+      <a routerLink="/" class="btn-retour-catalogue">Explorer le catalogue →</a>
+    </div>
+  } @else {
+    <!-- En-tête du panier -->
+    <div class="panier-top-bar">
+      <div>
+        <h1>Mon Panier Littéraire</h1>
+        <p class="panier-subtitle">{{ panierService.totalArticles() }} volume(s) sélectionné(s)</p>
+      </div>
+      <div class="panier-actions-rapides">
+        <div class="toggle-vues">
+          <button 
+            type="button" 
+            class="btn-toggle" 
+            [class.actif]="modeVue() === 'standard'"
+            (click)="modeVue.set('standard')"
+          >
+            📖 Vue Panier & Pile 3D
+          </button>
+          <button 
+            type="button" 
+            class="btn-toggle" 
+            [class.actif]="modeVue() === 'ticket'"
+            (click)="modeVue.set('ticket')"
+          >
+            🧾 Ticket Vintage
+          </button>
+        </div>
+        <button type="button" class="btn-vider" (click)="panierService.vider()">
+          Vider le panier
+        </button>
+      </div>
+    </div>
+
+    <!-- Barre de livraison offerte -->
+    <div class="banniere-livraison">
+      @if (panierService.restePourFraisOfferts() > 0) {
+        <div class="texte-livraison">
+          <span>📦 Plus que <strong>{{ panierService.restePourFraisOfferts() }} €</strong> pour débloquer la <strong>livraison offerte</strong> !</span>
+          <span>{{ panierService.progressionLivraison() }}%</span>
+        </div>
+      } @else {
+        <div class="texte-livraison offert">
+          <span>🎉 <strong>Félicitations !</strong> Vous bénéficiez de la livraison offerte à domicile !</span>
+          <span>100%</span>
+        </div>
+      }
+      <div class="jauge-fond">
+        <div class="jauge-progression" [style.width.%]="panierService.progressionLivraison()"></div>
+      </div>
+    </div>
+
+    @if (modeVue() === 'standard') {
+      <div class="panier-grille">
+        <!-- Colonne Gauche : Liste des livres -->
+        <div class="colonne-articles">
+          <div class="articles-liste">
+            @for (item of panierService.articles(); track item.livre.id) {
+              <div class="article-carte">
+                <div class="article-couv" [style.background]="item.livre.couleur || '#8a4a24'">
+                  <span class="couv-lettre">{{ item.livre.titre.slice(0, 1) }}</span>
+                </div>
+
+                <div class="article-details">
+                  <a [routerLink]="['/livre', item.livre.id]" class="article-titre">
+                    {{ item.livre.titre }}
+                  </a>
+                  <p class="article-auteur">par {{ item.livre.auteur }}</p>
+                  @if (item.livre.genre) {
+                    <span class="article-genre">{{ item.livre.genre }}</span>
+                  }
+                  <div class="article-prix-unitaire">{{ item.livre.prix }} € l'unité</div>
+                </div>
+
+                <div class="article-quantite">
+                  <div class="selecteur-qte">
+                    <button 
+                      type="button" 
+                      class="btn-qte" 
+                      (click)="panierService.decrementer(item.livre.id)"
+                      aria-label="Diminuer la quantité"
+                    >−</button>
+                    <span class="valeur-qte">{{ item.quantite }}</span>
+                    <button 
+                      type="button" 
+                      class="btn-qte" 
+                      (click)="panierService.incrementer(item.livre.id)"
+                      aria-label="Augmenter la quantité"
+                    >+</button>
+                  </div>
+                  <button 
+                    type="button" 
+                    class="btn-supprimer" 
+                    (click)="panierService.retirer(item.livre.id)"
+                    title="Supprimer cet ouvrage"
+                  >
+                    🗑️ Retirer
+                  </button>
+                </div>
+
+                <div class="article-total-ligne">
+                  {{ (item.livre.prix * item.quantite).toFixed(2) }} €
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="navigation-panier-bas">
+            <a routerLink="/" class="lien-continuer">← Continuer mes lectures dans le catalogue</a>
+          </div>
+        </div>
+
+        <!-- Colonne Droite : Récapitulatif + La Pile à Lire 3D -->
+        <div class="colonne-droite">
+          <!-- Carte Récapitulatif -->
+          <div class="recapitulatif-carte">
+            <h3>Récapitulatif de la commande</h3>
+            
+            <div class="ligne-recap">
+              <span>Sous-total ({{ panierService.totalArticles() }} vol.)</span>
+              <span class="montant">{{ panierService.sousTotal() }} €</span>
+            </div>
+
+            @if (panierService.montantRemise() > 0) {
+              <div class="ligne-recap ligne-remise">
+                <span>Remise promotionnelle</span>
+                <span class="montant-remise">-{{ panierService.montantRemise() }} €</span>
+              </div>
+            }
+
+            <div class="ligne-recap">
+              <span>Frais d'expédition</span>
+              <span>
+                @if (panierService.fraisDePort() === 0) {
+                  <strong class="texte-gratuit">Gratuit</strong>
+                } @else {
+                  <span>{{ panierService.fraisDePort() }} €</span>
+                }
+              </span>
+            </div>
+
+            <!-- Code Promo -->
+            <div class="code-promo-zone">
+              @if (panierService.codePromo()) {
+                <div class="code-applique-badge">
+                  <span>Code <strong>{{ panierService.codePromo() }}</strong> actif</span>
+                  <button type="button" class="btn-retirer-code" (click)="panierService.supprimerCodePromo()">✕</button>
+                </div>
+              } @else {
+                <div class="form-code">
+                  <input 
+                    type="text" 
+                    placeholder="Code promo (ex: PLEINEPAGE10)" 
+                    [value]="codePromoSaisi()" 
+                    (input)="codePromoSaisi.set($any($event.target).value)"
+                  />
+                  <button type="button" class="btn-appliquer-code" (click)="appliquerCode()">Appliquer</button>
+                </div>
+                <div class="indices-promo">
+                  <span>Astuce : essayez <code>PLEINEPAGE10</code> ou <code>CADEAU</code></span>
+                </div>
+              }
+            </div>
+
+            <div class="separateur-recap"></div>
+
+            <div class="ligne-total-final">
+              <span>Total TTC</span>
+              <span class="prix-final">{{ panierService.totalFinal() }} €</span>
+            </div>
+
+            <button type="button" class="btn-commander" (click)="finaliserCommande()">
+              Commander ma sélection 📦
+            </button>
+
+            <div class="garanties-livraison">
+              <span>🌿 Papier éco-responsable certifié</span>
+              <span>⚡ Expédié sous 24h avec soin</span>
+            </div>
+          </div>
+
+          <!-- LA FONCTIONNALITÉ QUI SORT DE L'ORDINAIRE : La Pile à Lire 3D -->
+          <div class="carte-pile-3d">
+            <div class="pile-header">
+              <div class="pile-titre-zone">
+                <span class="badge-insolite">✨ Visualiseur Exclusif</span>
+                <h4>Votre « Pile à Lire » physique en 3D</h4>
+              </div>
+              <p class="pile-desc">Survolez un livre pour inspecter sa tranche sur votre étagère virtuelle !</p>
+            </div>
+
+            <!-- Scène 3D CSS -->
+            <div class="scene-pile-3d">
+              <div class="socle-bois"></div>
+              <div class="livres-empiles">
+                @for (l of pileLivres3D(); track l.indexGlobal) {
+                  <div 
+                    class="livre-3d-tranche"
+                    [style.--couleur-dos]="l.couleur"
+                    [style.--hauteur-dos.px]="l.epaisseurMm"
+                    [style.z-index]="pileLivres3D().length - l.indexGlobal"
+                  >
+                    <div class="tranche-relief">
+                      <span class="tranche-titre">{{ l.titre }}</span>
+                      <span class="tranche-auteur">{{ l.auteur }}</span>
+                      <span class="dorure-deco">✦</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Statistiques Littéraires Interactives -->
+            <div class="stats-litteraires-grille">
+              <div class="stat-item">
+                <span class="stat-icone">⏳</span>
+                <div class="stat-texte">
+                  <span class="stat-valeur">
+                    {{ panierService.estimationTempsLectureHeures().heures }}h {{ panierService.estimationTempsLectureHeures().minutes }}m
+                  </span>
+                  <span class="stat-label">de bonheur de lecture</span>
+                </div>
+              </div>
+
+              <div class="stat-item">
+                <span class="stat-icone">📏</span>
+                <div class="stat-texte">
+                  <span class="stat-valeur">{{ panierService.hauteurPileCm() }} cm</span>
+                  <span class="stat-label">de hauteur sur table</span>
+                </div>
+              </div>
+
+              <div class="stat-item">
+                <span class="stat-icone">☕</span>
+                <div class="stat-texte">
+                  <span class="stat-valeur">~{{ panierService.tassesDeThe() }} tasses</span>
+                  <span class="stat-label">de thé pour tout lire</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <!-- Vue Ticket Vintage & Machine à écrire -->
+      <div class="vue-ticket-wrapper">
+        <div class="ticket-caisse">
+          <div class="ticket-dentelle-haut"></div>
+          <div class="ticket-corps">
+            <div class="ticket-entete">
+              <h2>LIBRAIRIE PLEINE PAGE</h2>
+              <p>42, Rue des Belles Lettres — Paris</p>
+              <p>Tél : 01 42 00 00 00</p>
+              <div class="ticket-date-ligne">
+                <span>Date : {{ dateAujourdhui }}</span>
+                <span>{{ heureAujourdhui }}</span>
+              </div>
+              <div class="ticket-separateur-pointille"></div>
+            </div>
+
+            <div class="ticket-articles">
+              <div class="ticket-ligne-titres">
+                <span>ARTICLES</span>
+                <span>TOTAL</span>
+              </div>
+              <div class="ticket-separateur-pointille"></div>
+              @for (item of panierService.articles(); track item.livre.id) {
+                <div class="ticket-item">
+                  <div class="ticket-item-nom">
+                    <strong>{{ item.livre.titre }}</strong>
+                    <span class="ticket-item-sub">{{ item.quantite }} x {{ item.livre.prix }} €</span>
+                  </div>
+                  <span class="ticket-item-prix">{{ (item.livre.prix * item.quantite).toFixed(2) }} €</span>
+                </div>
+              }
+            </div>
+
+            <div class="ticket-separateur-pointille"></div>
+
+            <div class="ticket-totaux">
+              <div class="ticket-ligne">
+                <span>SOUS-TOTAL</span>
+                <span>{{ panierService.sousTotal() }} €</span>
+              </div>
+              @if (panierService.montantRemise() > 0) {
+                <div class="ticket-ligne remise">
+                  <span>REMISE ({{ panierService.codePromo() }})</span>
+                  <span>-{{ panierService.montantRemise() }} €</span>
+                </div>
+              }
+              <div class="ticket-ligne">
+                <span>LIVRAISON</span>
+                <span>{{ panierService.fraisDePort() === 0 ? 'OFFERTE' : panierService.fraisDePort() + ' €' }}</span>
+              </div>
+              <div class="ticket-separateur-double"></div>
+              <div class="ticket-ligne ticket-total-fort">
+                <span>TOTAL A PAYER</span>
+                <span>{{ panierService.totalFinal() }} €</span>
+              </div>
+            </div>
+
+            <div class="ticket-separateur-pointille"></div>
+
+            <div class="ticket-citation" (click)="changerCitation()" title="Cliquez pour changer de citation">
+              <p class="texte-citation">{{ citationActuelle().texte }}</p>
+              <p class="auteur-citation">— {{ citationActuelle().auteur }}</p>
+              <small class="astuce-clic">(cliquez pour une autre pensée littéraire)</small>
+            </div>
+
+            <div class="ticket-code-barres">
+              <div class="barres">|| | ||| | |||| || | ||| || ||| | |||</div>
+              <span class="code-num">PP-{{ panierService.totalArticles() }}-{{ panierService.totalFinal() }}-2026</span>
+            </div>
+
+            <p class="ticket-merci">MERCI DE VOTRE VISITE ET BONNES LECTURES !</p>
+          </div>
+          <div class="ticket-dentelle-bas"></div>
+        </div>
+
+        <div class="ticket-actions-impression">
+          <button type="button" class="btn-imprimer" (click)="imprimerTicket()">
+            🖨️ Imprimer ce ticket souvenir
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Modal Féerique de Commande Validée -->
+    @if (commandeValidee()) {
+      <div class="modal-backdrop">
+        <div class="modal-colis">
+          <div class="confettis-effet">
+            <span class="confetti">✨</span>
+            <span class="confetti">📜</span>
+            <span class="confetti">🎉</span>
+            <span class="confetti">✨</span>
+            <span class="confetti">🔖</span>
+            <span class="confetti">🌟</span>
+          </div>
+
+          <div class="colis-carton">
+            <div class="colis-ruban"></div>
+            <div class="colis-tampon">PLEINE PAGE<br>EXPÉDIÉ</div>
+            <div class="colis-icone">📦</div>
+          </div>
+
+          <h2>Commande confirmée avec succès !</h2>
+          <p class="modal-texte">
+            Vos <strong>{{ panierService.totalArticles() }} ouvrage(s)</strong> sont en cours de reliure et d'emballage soigné avec notre papier de soie signature.
+          </p>
+          <div class="modal-recap">
+            <span>Montant réglé : <strong>{{ panierService.totalFinal() }} €</strong></span>
+            <span>Numéro d'envoi : <strong>#PLP-{{ 1000 + panierService.totalArticles() }}X</strong></span>
+          </div>
+          <button type="button" class="btn-fermer-modal" (click)="fermerCommande()">
+            Retourner à la librairie
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>

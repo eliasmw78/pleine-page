@@ -1,7 +1,26 @@
 <header class="entete">
-  <a routerLink="/"><b>Pleine</b> Page</a>
-  <a routerLink="/">Catalogue</a>
+  <div class="marque-zone">
+    <a routerLink="/" class="logo"><b>Pleine</b> Page</a>
+    <span class="slogan">Librairie en ligne</span>
+  </div>
+  <nav class="liens-nav">
+    <a routerLink="/">Catalogue</a>
+    <a routerLink="/panier" class="lien-panier" id="lien-panier">
+      <span>Panier</span>
+      @if (panierService.totalArticles() > 0) {
+        <span class="badge-bulle">{{ panierService.totalArticles() }}</span>
+      }
+    </a>
+  </nav>
 </header>
+
+@if (panierService.notification(); as notif) {
+  <div class="toast-flottant" [class.succes]="notif.type === 'succes'">
+    <span>{{ notif.message }}</span>
+    <a routerLink="/panier" class="toast-lien">Voir mon panier →</a>
+  </div>
+}
+
 <main>
   <router-outlet />
 </main>

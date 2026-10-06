@@ -1,7 +1,18 @@
 .entete { 
   display: flex; justify-content: space-between; 
+  align-items: center;
   padding: 14px 24px; background: #1b232d; 
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: sticky; top: 0; z-index: 100;
+}
+.marque-zone {
+  display: flex; align-items: baseline; gap: 12px;
+}
+.logo {
+  font-size: 1.25rem;
+}
+.slogan {
+  color: #94a3b8; font-size: 0.8rem; font-style: italic;
 }
 .entete a { 
   color: #fff; text-decoration: none; 
@@ -11,11 +22,77 @@
   color: #4da3ff;
   transform: translateY(-2px);
 }
+.liens-nav {
+  display: flex; align-items: center; gap: 20px;
+}
+.lien-panier {
+  display: flex; align-items: center; gap: 8px;
+  position: relative;
+}
+.badge-bulle {
+  background: #b8541f;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  min-width: 18px;
+  text-align: center;
+  animation: rebond 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+}
+
+/* Toast de notification flottant */
+.toast-flottant {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1b232d;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 999;
+  font-size: 0.95rem;
+  animation: slideUp 0.3s ease-out;
+  border-left: 4px solid #0b63a6;
+}
+
+.toast-flottant.succes {
+  border-left-color: #22c55e;
+}
+
+.toast-lien {
+  color: #4da3ff;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.toast-lien:hover {
+  text-decoration: underline;
+}
+
 main { 
-  max-width: 900px; margin: 0 auto; padding: 24px; 
+  max-width: 960px; margin: 0 auto; padding: 24px; 
   animation: fadeIn 0.5s ease-out;
 }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rebond {
+  0% { transform: scale(0.6); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }

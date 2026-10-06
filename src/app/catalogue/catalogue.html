@@ -1,8 +1,41 @@
-<h1>Catalogue</h1>
-<input placeholder="Filtrer par auteur" (input)="filtre.set($any($event.target).value)">
-<p>{{ resultats().length }} livre(s)</p>
-<ul>
+<div class="catalogue-top">
+  <div>
+    <h1>Catalogue</h1>
+    <p class="compteur-livres">{{ resultats().length }} livre(s) disponible(s)</p>
+  </div>
+  <div class="champ-recherche-box">
+    <input 
+      placeholder="Filtrer par auteur ou titre..." 
+      [value]="filtre()"
+      (input)="filtre.set($any($event.target).value)"
+    >
+  </div>
+</div>
+
+<ul class="catalogue-liste">
   @for (l of resultats(); track l.id) {
-    <li><a [routerLink]="['/livre', l.id]">{{ l.titre }}</a>, {{ l.auteur }}, {{ l.prix }} €</li>
+    <li class="livre-item">
+      <div class="livre-gauche">
+        <div class="pastille-couv" [style.background]="l.couleur || '#8a4a24'"></div>
+        <div>
+          <a [routerLink]="['/livre', l.id]" class="titre-lien">{{ l.titre }}</a>
+          <span class="auteur-nom"> — {{ l.auteur }}</span>
+          @if (l.genre) {
+            <span class="genre-pastille">{{ l.genre }}</span>
+          }
+        </div>
+      </div>
+      <div class="livre-droite">
+        <span class="prix-badge">{{ l.prix }} €</span>
+        <button 
+          type="button" 
+          class="btn-ajout-rapide"
+          (click)="ajouterRapide($event, l)"
+          [title]="panierService.estDansLePanier(l.id) ? 'Ajouter un exemplaire' : 'Ajouter au panier'"
+        >
+          {{ panierService.estDansLePanier(l.id) ? '+1 (' + panierService.quantiteDe(l.id) + ')' : '+ Panier' }}
+        </button>
+      </div>
+    </li>
   }
 </ul>

@@ -1,30 +1,143 @@
+.catalogue-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0;
+  color: #1b232d;
+  font-size: 2rem;
+}
+
+.compteur-livres {
+  margin: 4px 0 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.champ-recherche-box {
+  display: flex;
+  align-items: center;
+}
+
 input { 
-  padding: 10px; font-size: 16px; width: 260px; 
+  padding: 10px 14px; font-size: 15px; width: 280px; 
   border: 1px solid #ccc; border-radius: 6px;
   transition: border-color 0.3s, box-shadow 0.3s;
+  background: #fff;
 }
 input:focus {
   outline: none; border-color: #0b63a6;
   box-shadow: 0 0 8px rgba(11, 99, 166, 0.3);
 }
+
+.catalogue-liste {
+  padding: 0;
+  margin: 0;
+}
+
 li { 
   margin-bottom: 12px; list-style-type: none;
-  padding: 12px; background: #f9f9f9;
+  padding: 14px 18px; background: #f9f9f9;
   border-radius: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #eef2f6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   animation: slideIn 0.4s ease-out backwards;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
+
 /* Délai en cascade pour les premiers éléments */
 li:nth-child(1) { animation-delay: 0.05s; }
 li:nth-child(2) { animation-delay: 0.1s; }
 li:nth-child(3) { animation-delay: 0.15s; }
 li:nth-child(4) { animation-delay: 0.2s; }
+li:nth-child(5) { animation-delay: 0.25s; }
+li:nth-child(6) { animation-delay: 0.3s; }
+
 li:hover {
   transform: translateX(5px) scale(1.01);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  background: #ffffff;
 }
-li a { text-decoration: none; color: #1b232d; font-weight: bold; }
+
+.livre-gauche {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.pastille-couv {
+  width: 14px;
+  height: 38px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+li a { 
+  text-decoration: none; 
+  color: #1b232d; 
+  font-weight: 600; 
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
 li a:hover { color: #0b63a6; }
+
+.auteur-nom {
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.genre-pastille {
+  display: inline-block;
+  font-size: 0.75rem;
+  background: #e2e8f0;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+}
+
+.livre-droite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.prix-badge {
+  font-weight: 700;
+  color: #b8541f;
+  font-size: 1.1rem;
+}
+
+.btn-ajout-rapide {
+  background: #f1f5f9;
+  color: #0b63a6;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-ajout-rapide:hover {
+  background: #0b63a6;
+  color: #fff;
+  border-color: #0b63a6;
+  transform: translateY(-1px);
+}
+
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(-15px); }
   to { opacity: 1; transform: translateX(0); }
