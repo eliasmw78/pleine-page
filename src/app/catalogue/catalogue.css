@@ -1,2 +1,31 @@
-input { padding: 8px; font-size: 16px; width: 260px; }
-li { margin-bottom: 6px; }
+input { 
+  padding: 10px; font-size: 16px; width: 260px; 
+  border: 1px solid #ccc; border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+input:focus {
+  outline: none; border-color: #0b63a6;
+  box-shadow: 0 0 8px rgba(11, 99, 166, 0.3);
+}
+li { 
+  margin-bottom: 12px; list-style-type: none;
+  padding: 12px; background: #f9f9f9;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: slideIn 0.4s ease-out backwards;
+}
+/* Délai en cascade pour les premiers éléments */
+li:nth-child(1) { animation-delay: 0.05s; }
+li:nth-child(2) { animation-delay: 0.1s; }
+li:nth-child(3) { animation-delay: 0.15s; }
+li:nth-child(4) { animation-delay: 0.2s; }
+li:hover {
+  transform: translateX(5px) scale(1.01);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+li a { text-decoration: none; color: #1b232d; font-weight: bold; }
+li a:hover { color: #0b63a6; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-15px); }
+  to { opacity: 1; transform: translateX(0); }
+}

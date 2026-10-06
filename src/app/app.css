@@ -1,17 +1,21 @@
-.entete {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 24px;
-  background: #1b232d;
+.entete { 
+  display: flex; justify-content: space-between; 
+  padding: 14px 24px; background: #1b232d; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-
-.entete a {
-  color: #fff;
-  text-decoration: none;
+.entete a { 
+  color: #fff; text-decoration: none; 
+  transition: color 0.3s ease, transform 0.3s ease;
 }
-
-main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px;
+.entete a:hover {
+  color: #4da3ff;
+  transform: translateY(-2px);
+}
+main { 
+  max-width: 900px; margin: 0 auto; padding: 24px; 
+  animation: fadeIn 0.5s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
