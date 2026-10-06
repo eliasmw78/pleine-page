@@ -1,0 +1,8 @@
+<h1>Catalogue</h1>
+<input placeholder="Filtrer par auteur" (input)="filtre.set($any($event.target).value)">
+<p>{{ resultats().length }} livre(s)</p>
+<ul>
+  @for (l of resultats(); track l.id) {
+    <li><a [routerLink]="['/livre', l.id]">{{ l.titre }}</a>, {{ l.auteur }}, {{ l.prix }} €</li>
+  }
+</ul>

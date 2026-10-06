@@ -1,0 +1,17 @@
+.entete {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: #1b232d;
+}
+
+.entete a {
+  color: #fff;
+  text-decoration: none;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
